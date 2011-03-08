@@ -49,7 +49,7 @@ def post_to_twitter(sender, instance, **kwargs):
         url = "http://%s%s" % (current_domain, instance.get_absolute_url())
 
         prefix_message = instance.tease
-        if prefix_message is None:
+        if not prefix_message:
             prefix_message = "New Blog Post"
 
         mesg = "%s - %s" % (prefix_message, url)
