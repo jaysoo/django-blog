@@ -58,6 +58,7 @@ class Post(models.Model):
 
     body_markup     = models.TextField(editable=True, blank=True, null=True)
     visits          = models.IntegerField(_('visits'), default=0, editable=False) #to keep track of most popular posts
+    popularity      = models.FloatField(_('popularity'), default=0, editable=False)
     status          = models.IntegerField(_('status'), choices=STATUS_CHOICES, default=2)
     allow_comments  = models.BooleanField(_('allow comments'), default=True)
     publish         = models.DateTimeField(_('publish'), default=datetime.datetime.now)
@@ -135,6 +136,10 @@ class Post(models.Model):
             return Settings.get_current().meta_description
         else:
             return truncate_words(self.tease, 255)
+    
+    @property
+    def get_audio_files(self):
+        return AudioFile.objects.filter(post=self)
 
 class Settings(models.Model):
     '''
@@ -224,3 +229,15 @@ class BlogRoll(models.Model):
 
     def get_absolute_url(self):
         return self.url
+
+class AudioFile(models.Model):
+    file = models.FileField(upload_to='audio/%Y/%m/%d')
+    post = models.ForeignKey(Post)
+
+    def __unicode__(self):
+        return self.filename
+
+    @property
+    def filename(self):
+        return self.file.name.split('/')[-1]
+
