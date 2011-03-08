@@ -169,3 +169,37 @@ def get_blogroll(parser, token):
         raise template.TemplateSyntaxError, "%s tag had invalid arguments" % tag_name
     var_name = m.groups()[0]
     return BlogRolls(var_name)
+
+class PostMonths(template.Node):
+    def __init__(self, var_name):
+        self.var_name = var_name
+
+    def render(self, context):
+        months = Post.objects.dates('publish', 'month')
+        blogrolls = BlogRoll.objects.all()
+        context[self.var_name] = months
+        return ''
+
+@register.tag
+def get_months(parser, token):
+    """
+    Gets any number of latest posts and stores them in a varable.
+
+    Syntax::
+
+        {% get_months as [var_name] %}
+
+    Example usage::
+
+        {% get_months as months %}
+    """
+    try:
+        tag_name, arg = token.contents.split(None, 1)
+    except ValueError:
+        raise template.TemplateSyntaxError, "%s tag requires arguments" % token.contents.split()[0]
+    m = re.search(r'as (\w+)', arg)
+    if not m:
+        raise template.TemplateSyntaxError, "%s tag had invalid arguments" % tag_name
+    var_name = m.groups()[0]
+    return PostMonths(var_name)
+
