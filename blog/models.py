@@ -15,6 +15,7 @@ from django.conf import settings
 from django.utils.safestring import mark_safe
 from django.core.cache import cache
 from django.utils.text import truncate_words
+from sugar.cache.utils import create_cache_key
 
 from django.db.models import signals
 from django.dispatch import dispatcher

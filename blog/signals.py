@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse
 from django_twitter.models import TwitterAccount
 from django.contrib.sites.models import Site
 from django.conf import settings
+from sugar.cache.utils import create_cache_key
 
 def invalidate_settings_cache(sender=None, instance=None, isnew=False, **kwargs):
 

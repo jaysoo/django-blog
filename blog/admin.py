@@ -1,6 +1,7 @@
 from django.contrib import admin
 from models import *
 from django.forms.widgets import Textarea
+from sugar.cache.utils import create_cache_key
 
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}

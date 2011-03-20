@@ -1,4 +1,5 @@
 from models import Settings
+from sugar.cache.utils import create_cache_key
 
 def blog_settings(request):
     """
