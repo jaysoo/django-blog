@@ -1,6 +1,5 @@
 from django.core.cache import cache
 from models import Settings
-from sugar.cache.utils import create_cache_key
 import twitter
 import urllib2
 from django.core.urlresolvers import reverse
