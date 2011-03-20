@@ -239,5 +239,6 @@ class AudioFile(models.Model):
 
     @property
     def filename(self):
-        return self.file.name.split('/')[-1]
-
+        if self.file.name:
+            return self.file.name.split('/')[-1]
+        return ''
