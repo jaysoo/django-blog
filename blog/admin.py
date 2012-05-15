@@ -1,7 +1,6 @@
 from django.contrib import admin
 from models import *
-from django.forms.widgets import Textarea
-from sugar.cache.utils import create_cache_key
+from tinymce.widgets import TinyMCE
 
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
@@ -57,6 +56,22 @@ class PostAdmin(admin.ModelAdmin):
         if db_field.name == 'author':
             queryset = models.User.objects.all()
             field = forms.ModelChoiceField(queryset=queryset, initial=self.current_user.id)
+
+        if db_field.name == 'body':
+            field = forms.CharField(widget=TinyMCE(attrs={'cols': 100, 'rows': 20}, mce_attrs={
+                'theme': "advanced",
+                'theme_advanced_toolbar_location': "top",
+                'plugins': "autolink,lists,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+
+                'theme_advanced_buttons1': "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
+                'theme_advanced_buttons2': "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor,|,charmap",
+                'theme_advanced_buttons3': '',
+                'theme_advanced_toolbar_align': "left",
+                'theme_advanced_statusbar_location': "bottom",
+                'theme_advanced_resizing': "true",
+                'skin': "o2k7",
+                'skin_variant': "silver",
+            }))
 
         return field
 
